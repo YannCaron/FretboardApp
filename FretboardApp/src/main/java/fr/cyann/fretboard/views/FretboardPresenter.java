@@ -8,12 +8,14 @@ import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import fr.cyann.fretboard.Main;
 import fr.cyann.fretboard.controls.Fretboard;
+import fr.cyann.fretboard.model.BoardNoteAddable;
 import fr.cyann.fretboard.model.DefaultFretboardModel;
 import fr.cyann.fretboard.model.Note;
 import fr.cyann.fretboard.model.Settings;
 import java.util.Arrays;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 public class FretboardPresenter {
@@ -24,8 +26,12 @@ public class FretboardPresenter {
     private View fretboard;
 
     @FXML
+    private AnchorPane apContainer;
+    
+    @FXML
     private Fretboard fbFretboard;
 
+    
     public void initialize () {
         fretboard.setShowTransitionFactory(BounceInRightTransition::new);
 
@@ -43,9 +49,12 @@ public class FretboardPresenter {
             }
         });
 
+        fbFretboard.scaleXProperty().set(1.5f);
+        fbFretboard.scaleYProperty().set(1.5f);
         fbFretboard.rotateProperty().set(90);
         fbFretboard.translateXProperty().set(-335);
-        fbFretboard.translateYProperty().set(500);
+        fbFretboard.translateYProperty().set(750);
+        apContainer.setMinHeight(2000);
 
         DefaultFretboardModel model = new DefaultFretboardModel();
         fbFretboard.setModel(model);
@@ -60,26 +69,7 @@ public class FretboardPresenter {
 
             model.clearNotes();
 
-            int intervalFromRoot = 0;
-            for (int interval : Settings.getMode().getIntervals()) {
-                Note note = Note.valueOf((Settings.getNote().interval() + intervalFromRoot) % 12);
-                Color color = Color.BLACK;
-                if (intervalFromRoot == 0) {
-                    color = Color.RED;
-                } else if (intervalFromRoot == 6) {
-                    color = Color.BLUE;
-                } else if (intervalFromRoot == 3) {
-                    color = Color.BLUEVIOLET;
-                } else if (intervalFromRoot == 4) {
-                    color = Color.DARKVIOLET;
-                } else if (intervalFromRoot == 7) {
-                    color = Color.BROWN;
-                }
-
-                model.addNote(note, color);
-
-                intervalFromRoot += interval;
-            }
+            BoardNoteAddable.apply(model);
 
             fbFretboard.update();
         });

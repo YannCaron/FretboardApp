@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.cyann.fretboard.model;
+package fr.cyann.fretboard;
 
 import java.io.InputStream;
 import java.util.List;
@@ -18,15 +18,15 @@ import org.simpleframework.xml.core.Persister;
  *
  * @author cyann
  */
-public class SerializationUtils {
+public class Utils {
 
-    private static final Logger LOGGER = Logger.getLogger(SerializationUtils.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 
-    private SerializationUtils () {
+    private Utils () {
     }
 
     public static InputStream getRessource (String path) {
-        return SerializationUtils.class.getClassLoader().getResourceAsStream(path);
+        return Utils.class.getClassLoader().getResourceAsStream(path);
     }
 
     public static <T> void loadSystemXMLTo (Class<T> cls, ChoiceBox cb, String path, Function<T, List> accessor) {

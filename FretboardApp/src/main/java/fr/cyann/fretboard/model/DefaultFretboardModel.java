@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
  *
  * @author cyann
  */
-public class DefaultFretboardModel extends FretboardModel {
+public class DefaultFretboardModel extends FretboardModel implements BoardNoteAddable {
 
     public static final int DEFAULT_FRET_COUNT = 12;
 
@@ -42,6 +42,7 @@ public class DefaultFretboardModel extends FretboardModel {
         return tunes;
     }
 
+    @Override
     public void addNote(Note note, Color color) {
         scale.put(note, color);
     }

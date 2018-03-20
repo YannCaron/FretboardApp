@@ -7,7 +7,7 @@ import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import fr.cyann.fretboard.Main;
 import fr.cyann.fretboard.model.Modes;
 import fr.cyann.fretboard.model.Note;
-import fr.cyann.fretboard.model.SerializationUtils;
+import fr.cyann.fretboard.Utils;
 import fr.cyann.fretboard.model.Settings;
 import fr.cyann.fretboard.model.Tunes;
 import java.util.logging.Logger;

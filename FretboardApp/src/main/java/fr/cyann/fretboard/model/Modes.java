@@ -5,7 +5,7 @@
  */
 package fr.cyann.fretboard.model;
 
-import static fr.cyann.fretboard.model.SerializationUtils.getRessource;
+import static fr.cyann.fretboard.Utils.getRessource;
 import static fr.cyann.fretboard.model.Tunes.TUNE_XML_PATH;
 import java.util.ArrayList;
 import java.util.HashMap;

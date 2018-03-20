@@ -5,7 +5,7 @@
  */
 package fr.cyann.fretboard.model;
 
-import static fr.cyann.fretboard.model.SerializationUtils.getRessource;
+import static fr.cyann.fretboard.Utils.getRessource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
