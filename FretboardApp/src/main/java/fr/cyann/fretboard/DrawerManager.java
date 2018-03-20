@@ -13,6 +13,7 @@ import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import static fr.cyann.fretboard.Main.MENU_LAYER;
 import static fr.cyann.fretboard.Main.CONFIGURATION_VIEW;
 import static fr.cyann.fretboard.Main.FRETBOARD_VIEW;
+import static fr.cyann.fretboard.Main.PIANOBOARD_VIEW;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 
@@ -30,7 +31,8 @@ public class DrawerManager {
         
         final Item configurationItem = new ViewItem("Configuration", MaterialDesignIcon.HOME.graphic(), CONFIGURATION_VIEW, ViewStackPolicy.SKIP);
         final Item fretboardItem = new ViewItem("Fretboard", MaterialDesignIcon.DASHBOARD.graphic(), FRETBOARD_VIEW);
-        drawer.getItems().addAll(configurationItem, fretboardItem);
+        final Item pianoboardItem = new ViewItem("Pianoboard", MaterialDesignIcon.DASHBOARD.graphic(), PIANOBOARD_VIEW);
+        drawer.getItems().addAll(configurationItem, fretboardItem, pianoboardItem);
         
         if (Platform.isDesktop()) {
             final Item quitItem = new Item("Quit", MaterialDesignIcon.EXIT_TO_APP.graphic());

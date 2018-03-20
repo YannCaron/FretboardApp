@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.mvc.View?>
+
+<View fx:id="pianoboard"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="330.0" stylesheets="@pianoboard.css" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cyann.fretboard.views.PianoboardPresenter">
+    <center>
+        <fr.cyann.fretboard.controls.Pianoboard fx:id="pbPianoboard" />
+    </center>
+</View>
