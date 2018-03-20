@@ -7,15 +7,11 @@ package fr.cyann.fretboard.model;
 
 import com.gluonhq.charm.down.Services;
 import com.gluonhq.charm.down.plugins.SettingsService;
-import fr.cyann.fretboard.views.ConfigurationPresenter;
-import java.util.logging.Level;
+import fr.cyann.fretboard.model.Modes.Mode;
+import fr.cyann.fretboard.model.Tunes.Tune;
 import java.util.logging.Logger;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -29,31 +25,31 @@ public class Settings {
     public static final String SETTING_NOTE_KEY = "note";
     public static final String SETTING_MODE_KEY = "mode";
 
-    private static final IntegerProperty TUNE_PROPERTY = new SimpleIntegerProperty();
+    private static final ObjectProperty<Tune> TUNE_PROPERTY = new SimpleObjectProperty<>();
     private static final ObjectProperty<Note> NOTE_PROPERTY = new SimpleObjectProperty<>(Note.A);
-    private static final IntegerProperty MODE_PROPERTY = new SimpleIntegerProperty();
+    private static final ObjectProperty<Mode> MODE_PROPERTY = new SimpleObjectProperty<>();
 
-    public static int getTune () {
+    public static Tune getTune () {
 
         Services.get(SettingsService.class).ifPresent(service -> {
             String str = service.retrieve(SETTING_TUNE_KEY);
             if (str != null) {
-                TUNE_PROPERTY.set(Integer.valueOf(str));
+                TUNE_PROPERTY.set(Tunes.getInstance().valueOf(str));
             }
         });
 
         return TUNE_PROPERTY.get();
     }
 
-    public static void setTune (int value) {
+    public static void setTune (Tune value) {
 
         Services.get(SettingsService.class).ifPresent(service -> {
-            service.store(SETTING_TUNE_KEY, String.valueOf(value));
+            service.store(SETTING_TUNE_KEY, value.getName());
         });
 
     }
 
-    public static Note getNode () {
+    public static Note getNote () {
 
         Services.get(SettingsService.class).ifPresent(service -> {
             String note = service.retrieve(SETTING_NOTE_KEY);
@@ -65,7 +61,7 @@ public class Settings {
         return NOTE_PROPERTY.get();
     }
 
-    public static void setNode (Note note) {
+    public static void setNote (Note note) {
 
         Services.get(SettingsService.class).ifPresent(service -> {
             service.store(SETTING_NOTE_KEY, note.name());
@@ -73,22 +69,22 @@ public class Settings {
 
     }
 
-    public static int getMode () {
+    public static Mode getMode () {
 
         Services.get(SettingsService.class).ifPresent(service -> {
             String str = service.retrieve(SETTING_MODE_KEY);
             if (str != null) {
-                MODE_PROPERTY.set(Integer.valueOf(str));
+                MODE_PROPERTY.set(Modes.getInstance().valueOf(str));
             }
         });
 
         return MODE_PROPERTY.get();
     }
 
-    public static void setMode (int value) {
+    public static void setMode (Mode value) {
 
         Services.get(SettingsService.class).ifPresent(service -> {
-            service.store(SETTING_MODE_KEY, String.valueOf(value));
+            service.store(SETTING_MODE_KEY, value.getName());
         });
 
     }

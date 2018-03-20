@@ -7,28 +7,82 @@ import com.gluonhq.charm.glisten.layout.layer.FloatingActionButton;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import fr.cyann.fretboard.Main;
+import fr.cyann.fretboard.controls.Fretboard;
+import fr.cyann.fretboard.model.DefaultFretboardModel;
+import fr.cyann.fretboard.model.Note;
+import fr.cyann.fretboard.model.Settings;
+import java.util.Arrays;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.scene.paint.Color;
 
 public class FretboardPresenter {
+
+    private static final Logger LOGGER = Logger.getLogger(FretboardPresenter.class.getName());
 
     @FXML
     private View fretboard;
 
-    public void initialize() {
+    @FXML
+    private Fretboard fbFretboard;
+
+    public void initialize () {
         fretboard.setShowTransitionFactory(BounceInRightTransition::new);
-        
-        fretboard.getLayers().add(new FloatingActionButton(MaterialDesignIcon.INFO.text, 
-            e -> System.out.println("Info")).getLayer());
-        
+
+        fretboard.getLayers().add(new FloatingActionButton(MaterialDesignIcon.INFO.text,
+                e -> System.out.println("Info")).getLayer());
+
         fretboard.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 AppBar appBar = MobileApplication.getInstance().getAppBar();
-                appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
-                        MobileApplication.getInstance().showLayer(Main.MENU_LAYER)));
+                appBar.setNavIcon(MaterialDesignIcon.MENU.button(e
+                        -> MobileApplication.getInstance().showLayer(Main.MENU_LAYER)));
                 appBar.setTitleText("Fretboard");
-                appBar.getActionItems().add(MaterialDesignIcon.FAVORITE.button(e -> 
-                        System.out.println("Favorite")));
+                appBar.getActionItems().add(MaterialDesignIcon.FAVORITE.button(e
+                        -> System.out.println("Favorite")));
             }
         });
+
+        fbFretboard.rotateProperty().set(90);
+        fbFretboard.translateXProperty().set(-335);
+        fbFretboard.translateYProperty().set(500);
+
+        DefaultFretboardModel model = new DefaultFretboardModel();
+        fbFretboard.setModel(model);
+
+        fretboard.setOnShowing((event) -> {
+
+            LOGGER.warning("Load " + Settings.getTune().getName() + " tunning !");
+
+            model.setFretCount(Settings.getTune().getFretcount());
+            model.getTunes().clear();
+            model.getTunes().addAll(Arrays.asList(Settings.getTune().getNotes()));
+
+            model.clearNotes();
+
+            int intervalFromRoot = 0;
+            for (int interval : Settings.getMode().getIntervals()) {
+                Note note = Note.valueOf((Settings.getNote().interval() + intervalFromRoot) % 12);
+                Color color = Color.BLACK;
+                if (intervalFromRoot == 0) {
+                    color = Color.RED;
+                } else if (intervalFromRoot == 6) {
+                    color = Color.BLUE;
+                } else if (intervalFromRoot == 3) {
+                    color = Color.BLUEVIOLET;
+                } else if (intervalFromRoot == 4) {
+                    color = Color.DARKVIOLET;
+                } else if (intervalFromRoot == 7) {
+                    color = Color.BROWN;
+                }
+
+                model.addNote(note, color);
+
+                intervalFromRoot += interval;
+            }
+
+            fbFretboard.update();
+        });
     }
+
 }

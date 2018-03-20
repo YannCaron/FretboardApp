@@ -5,7 +5,13 @@
  */
 package fr.cyann.fretboard.model;
 
+import static fr.cyann.fretboard.model.SerializationUtils.getRessource;
+import static fr.cyann.fretboard.model.Tunes.TUNE_XML_PATH;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -19,6 +25,10 @@ import org.simpleframework.xml.core.Persister;
 @Root
 public class Modes {
 
+    public static final String MODES_XML_PATH = "fr/cyann/fretboard/data/modes.xml";
+
+    private static Modes singleton;
+
     @Root
     public static class Mode {
 
@@ -28,29 +38,57 @@ public class Modes {
         @Attribute
         private int[] intervals;
 
-        public String getName() {
+        public String getName () {
             return name;
         }
 
-        public int[] getIntervals() {
+        public int[] getIntervals () {
             return intervals;
         }
 
         @Override
-        public String toString() {
+        public String toString () {
             return name;
         }
-        
+
     }
 
     @ElementList(type = Mode.class)
     private ArrayList<Mode> modes;
 
-    public ArrayList<Mode> getModes() {
+    private Map<String, Mode> map;
+
+    public ArrayList<Mode> getModes () {
         return modes;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static Modes getInstance () {
+        if (singleton == null) {
+
+            try {
+                Serializer serializer = new Persister();
+
+                singleton = serializer.read(Modes.class, getRessource(MODES_XML_PATH));
+
+            } catch (Exception ex) {
+                Logger.getLogger(Tunes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        return singleton;
+    }
+
+    public Mode valueOf (String name) {
+        if (map == null) {
+            map = new HashMap<>();
+            for (Mode mode : modes) {
+                map.put(mode.getName(), mode);
+            }
+        }
+        return map.get(name);
+    }
+
+    public static void main (String[] args) throws Exception {
 
         Modes modes = new Modes();
         modes.modes = new ArrayList<>();

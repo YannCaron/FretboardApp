@@ -10,7 +10,6 @@ import fr.cyann.fretboard.model.Note;
 import fr.cyann.fretboard.model.SerializationUtils;
 import fr.cyann.fretboard.model.Settings;
 import fr.cyann.fretboard.model.Tunes;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -45,12 +44,12 @@ public class ConfigurationPresenter {
         });
 
         cbRootNote.getItems().addAll(Note.values());
-        cbRootNote.getSelectionModel().select(Settings.getNode());
+        cbRootNote.getSelectionModel().select(Settings.getNote());
 
-        SerializationUtils.loadSystemXMLTo(Tunes.class, cbTune, "fr/cyann/fretboard/data/tunes.xml", (t) -> t.getTunes());
+        cbTune.getItems().addAll(Tunes.getInstance().getTunes());
         cbTune.getSelectionModel().select(Settings.getTune());
 
-        SerializationUtils.loadSystemXMLTo(Modes.class, cbMode, "fr/cyann/fretboard/data/modes.xml", (m) -> m.getModes());
+        cbMode.getItems().addAll(Modes.getInstance().getModes());
         cbMode.getSelectionModel().select(Settings.getMode());
 
         cbTune.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tunes.Tune> observable, Tunes.Tune oldValue, Tunes.Tune newValue) -> {
@@ -68,15 +67,15 @@ public class ConfigurationPresenter {
     }
 
     protected void cbTune_onSelectedItemChanged (Tunes.Tune oldValue, Tunes.Tune tune) {
-        Settings.setTune(cbTune.getSelectionModel().getSelectedIndex());
+        Settings.setTune(cbTune.getValue());
     }
 
     protected void cbRootNote_onSelectedItemChanged (Note oldValue, Note rootNote) {
-        Settings.setNode(rootNote);
+        Settings.setNote(rootNote);
     }
 
     protected void cbMode_onSelectedItemChanged (Modes.Mode oldValue, Modes.Mode mode) {
-        Settings.setMode(cbMode.getSelectionModel().getSelectedIndex());
+        Settings.setMode(cbMode.getValue());
     }
 
 }
