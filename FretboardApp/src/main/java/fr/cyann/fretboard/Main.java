@@ -1,5 +1,6 @@
 package fr.cyann.fretboard;
 
+import com.gluonhq.charm.down.Platform;
 import fr.cyann.fretboard.views.ConfigurationView;
 import fr.cyann.fretboard.views.FretboardView;
 import com.gluonhq.charm.glisten.application.MobileApplication;
@@ -29,7 +30,7 @@ public class Main extends MobileApplication {
     @Override
     public void postInit(Scene scene) {
         Swatch.BLUE.assignTo(scene);
-
+        
         scene.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
         ((Stage) scene.getWindow()).getIcons().add(new Image(Main.class.getResourceAsStream("/icon.png")));
     }
